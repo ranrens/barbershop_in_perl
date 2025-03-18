@@ -9,8 +9,6 @@ use DBIx::Connector;
 use Config::Tiny;
 use FindBin;
 
-my $dbh; 
-
 sub _load_config {
     my $self = shift;
     my $config_file = "$FindBin::Bin/../lib/BarbershopMojolicious/Config/DB.ini";
@@ -19,16 +17,11 @@ sub _load_config {
     return $config->{db};
 }
 
-sub get_db_handler_obsolete {
+sub get_db_name {
     my $self = shift;
     my $db_config = $self->_load_config;
 
-    my $dsn = "DBI:$db_config->{driver}:database=$db_config->{database}:host=$db_config->{host}:port=$db_config->{port}";
-    $dbh = DBI->connect($dsn, 
-			$db_config->{username}, 
-			$db_config->{password}, 
-			{RaiseError => 1, AutoCommit => 1});
-    return $dbh;
+    return $db_config->{database}
 }
 
 sub get_db_handler {
@@ -40,11 +33,6 @@ sub get_db_handler {
 	                            $db_config->{password},
 	                            { RaiseError => 1, AutoCommit => 1 });
     return $conn;
-}
-
-sub revoke_db_handler {
-    my $self = shift;
-    $dbh->disconnect();
 }
 
 1;

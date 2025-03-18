@@ -4,7 +4,7 @@ use Mojo::Base -base;
 use POSIX qw(strftime);
 use BarbershopMojolicious::Service::DB;
 
-my $_table = "barbershop.users";
+my $_table = BarbershopMojolicious::Service::DB->new->get_db_name . ".users";
 
 sub list_users {
     my $self = shift;
